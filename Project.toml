@@ -1,0 +1,6 @@
+name = "JuliaPDFReader"
+authors = ["Aarav Patel <aaravpatel14.in@gmail.com>"]
+version = "1.0.0"
+
+[deps]
+PDFIO = "33946a48-a0c3-5a04-94ef-65022e391b1d"
