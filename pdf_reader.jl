@@ -12,11 +12,9 @@ function read_pdf(file_path::String)
         return
     end
 
-    # 1. Open the PDF document handle
     doc = pdDocOpen(file_path)
-    
-    # 2. Get and display document metadata (Producer, Author, etc.)
     info = pdDocGetInfo(doc)
+    
     println("="^40)
     println("📄 Document Metadata:")
     for (key, val) in info
@@ -24,18 +22,12 @@ function read_pdf(file_path::String)
     end
     println("="^40)
 
-    # 3. Get total page count
     npage = pdDocGetPageCount(doc)
     println("📖 Total Pages Found: $npage\n")
 
-    # 4. Loop through each page and extract text
     for i in 1:npage
         println("--- [ Page $i of $npage ] ---")
-        
-        # Get handle for the specific page
         page = pdDocGetPage(doc, i)
-        
-        # Extract text into an IOBuffer stream, then print it
         io = IOBuffer()
         pdPageExtractText(io, page)
         page_text = String(take!(io))
@@ -48,10 +40,12 @@ function read_pdf(file_path::String)
         println()
     end
 
-    # 5. Safely close the document handle to free up memory
     pdDocClose(doc)
 end
 
-# Example Usage:
-# Provide a valid path to a local PDF file to test it out
-# read_pdf("my_document.pdf")
+# CLI Argument Parser Execution
+if !isempty(ARGS)
+    read_pdf(ARGS[1])
+else
+    println("⚠️ Usage: julia pdf_reader.jl <path_to_pdf_file>")
+end
